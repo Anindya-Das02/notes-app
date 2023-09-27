@@ -19,7 +19,13 @@ public class SecurityConfig {
         http.cors(cors -> cors.disable())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(request -> {
-                    request.requestMatchers("/test/create","/public/**","/notes-app/**","/notes-app/account/**").permitAll().anyRequest().authenticated();
+                    // permitting all requests for dev phase
+                    // TODO: add security
+                    request.anyRequest().permitAll();
+//                            .requestMatchers("/test/create","/public/**","/notes-app/**","/notes-app/account/**")
+//                            .permitAll()
+//                            .anyRequest()
+//                            .authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();

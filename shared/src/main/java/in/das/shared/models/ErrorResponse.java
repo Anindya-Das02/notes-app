@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class ErrorResponse {
     private String errorCode;
     private String message;

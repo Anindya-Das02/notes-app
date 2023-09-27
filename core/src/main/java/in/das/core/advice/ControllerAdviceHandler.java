@@ -1,6 +1,7 @@
 package in.das.core.advice;
 
 import in.das.shared.exception.AccountCreationException;
+import in.das.shared.exception.AccountException;
 import in.das.shared.exception.BadRequestException;
 import in.das.shared.models.ErrorResponse;
 import in.das.shared.utils.CommonUtils;
@@ -32,6 +33,17 @@ public class ControllerAdviceHandler {
                 .message(ex.getMessage())
                 .uuid(CommonUtils.getRandomUUID())
                 .errorCode("ERR_002")
+                .timestamp(Timestamp.valueOf(LocalDateTime.now()))
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(AccountException.class)
+    public ResponseEntity<ErrorResponse> handleAccountException(AccountException ex){
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .message(ex.getMessage())
+                .uuid(CommonUtils.getRandomUUID())
+                .errorCode("ERR_003")
                 .timestamp(Timestamp.valueOf(LocalDateTime.now()))
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);

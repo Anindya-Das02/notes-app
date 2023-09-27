@@ -4,9 +4,8 @@ import in.das.core.services.AccountService;
 import in.das.entity.Account;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.RequestEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,6 +20,12 @@ public class AccountController {
     @GetMapping("/details/all")
     public List<Account> getAllAccountDetails(){
         return accountService.fetchAllAccounts();
+    }
+
+    @GetMapping("/details")
+    public Account getAccountDetails(@RequestParam("identifier") String identifier, @RequestParam("id") String id){
+        log.info("Invoked AccountController::getAccountDetails");
+        return accountService.getAccountDetails(id,identifier);
     }
 
 
