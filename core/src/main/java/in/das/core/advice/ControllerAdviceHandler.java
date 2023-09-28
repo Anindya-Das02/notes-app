@@ -3,6 +3,7 @@ package in.das.core.advice;
 import in.das.shared.exception.AccountCreationException;
 import in.das.shared.exception.AccountException;
 import in.das.shared.exception.BadRequestException;
+import in.das.shared.exception.ValidationException;
 import in.das.shared.models.ErrorResponse;
 import in.das.shared.utils.CommonUtils;
 import org.springframework.http.HttpStatus;
@@ -44,6 +45,17 @@ public class ControllerAdviceHandler {
                 .message(ex.getMessage())
                 .uuid(CommonUtils.getRandomUUID())
                 .errorCode("ERR_003")
+                .timestamp(Timestamp.valueOf(LocalDateTime.now()))
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<ErrorResponse> handleValidationException(ValidationException ex){
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .message(ex.getMessage())
+                .uuid(CommonUtils.getRandomUUID())
+                .errorCode("ERR_004")
                 .timestamp(Timestamp.valueOf(LocalDateTime.now()))
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);

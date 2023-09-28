@@ -43,6 +43,10 @@ public class AccountRepoImpl {
         return accountRepository.findByUsername(username).orElseThrow(() -> new AccountException("Cannot find Account with given username"));
     }
 
+    public Optional<Account> findAccountByUsername(final String username){
+        return accountRepository.findByUsername(username);
+    }
+
     public Account fetchAccountByEmail(final String email){
         return accountRepository.findByEmailId(email).orElseThrow(() -> new AccountException("Cannot find Account with given email-id"));
     }

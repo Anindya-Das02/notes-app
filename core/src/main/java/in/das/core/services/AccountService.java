@@ -23,11 +23,14 @@ import java.util.Optional;
 public class AccountService {
 
     @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
     private AccountRepoImpl accountRepositoryImpl;
 
     public Account createAccount(final Account account){
         log.info("creating account");
-        account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
         account.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
         Account createdAccount = accountRepositoryImpl.createAccount(account);
         if(createdAccount == null){
@@ -43,9 +46,8 @@ public class AccountService {
 
     public LoginResponse accountLogin(final AccountRequest accountRequest){
         validateLoginCredentials(accountRequest);
-        accountRequest.setPassword(new BCryptPasswordEncoder().encode(accountRequest.getPassword()));
-        Optional<Account> accountResult = accountRepositoryImpl.loginByUsernameAndPassword(accountRequest.getUsername(),accountRequest.getPassword());
-        if(accountResult.isEmpty()){
+        Optional<Account> accountResult = accountRepositoryImpl.findAccountByUsername(accountRequest.getUsername());
+        if(accountResult.isEmpty() || !passwordEncoder.matches(accountRequest.getPassword(),accountResult.get().getPassword())){
             log.error("Login failed! No Account found with given username & password");
             return LoginResponse.builder().loginStatus(false).build();
         }
