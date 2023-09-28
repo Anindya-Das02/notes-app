@@ -7,9 +7,9 @@ import in.das.shared.models.NotesResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.RequestEntity;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/notes-app/notes")
@@ -29,5 +29,11 @@ public class NotesController {
     public NotesResponse updateNote(RequestEntity<NotesRequest> notesRequestRequestEntity){
         log.info("Invoked NotesController::updateNote");
         return notesService.updateNote(notesRequestRequestEntity.getBody());
+    }
+
+    @GetMapping("/account/{accountId}")
+    public List<Notes> getNotes(@PathVariable("accountId") Long accountId){
+        log.info("Invoked NotesController::getNotes");
+        return notesService.getNotes(accountId);
     }
 }
