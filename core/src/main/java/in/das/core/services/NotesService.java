@@ -4,7 +4,6 @@ import in.das.entity.Account;
 import in.das.entity.Notes;
 import in.das.repository.impl.NotesRepoImpl;
 import in.das.shared.enums.NoteType;
-import in.das.shared.exception.BadRequestException;
 import in.das.shared.exception.ValidationException;
 import in.das.shared.models.NotesRequest;
 import in.das.shared.models.NotesResponse;
@@ -71,6 +70,21 @@ public class NotesService {
         List<Notes> notesList = notesRepoImpl.fetchNotes(accountId,false);
         log.info("fetched {} notes for accountId:{}",notesList.size(),accountId);
         return notesList;
+    }
+
+    public NotesResponse deleteNote(final NotesRequest notesRequest){
+        log.info("deleting note");
+        int rowsEffected = notesRepoImpl.deleteNote(notesRequest.getNoteId(), notesRequest.getAccountId());
+        log.info("deleted {} notes", rowsEffected);
+        if(rowsEffected == 0){
+            return buildNoteFailureResponse(NoteType.NOTE_DELETE,"No records deleted");
+        }
+        return NotesResponse.builder()
+                .noteId(notesRequest.getNoteId())
+                .createdBy(notesRequest.getAccountId())
+                .noteDeleteStatus(true)
+                .message(rowsEffected + " records deleted")
+                .build();
     }
 
     private void validateNote(final NotesRequest notesRequest){

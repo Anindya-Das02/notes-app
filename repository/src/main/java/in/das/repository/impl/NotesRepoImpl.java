@@ -3,6 +3,7 @@ package in.das.repository.impl;
 import in.das.entity.Notes;
 import in.das.repository.NotesRepository;
 import in.das.shared.models.NotesRequest;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -35,5 +36,10 @@ public class NotesRepoImpl {
 
     public List<Notes> fetchNotes(final Long accountId, final boolean deleteFlag){
         return notesRepository.findNotesByAccountId(accountId, deleteFlag);
+    }
+
+    @Transactional
+    public int deleteNote(final Long noteId, final Long accountId){
+        return notesRepository.deleteNoteByIdAndAccount(noteId,accountId);
     }
 }
