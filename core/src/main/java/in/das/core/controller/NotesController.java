@@ -2,6 +2,7 @@ package in.das.core.controller;
 
 import in.das.core.services.NotesService;
 import in.das.entity.Notes;
+import in.das.shared.exception.BadRequestException;
 import in.das.shared.models.NotesRequest;
 import in.das.shared.models.NotesResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -35,5 +36,18 @@ public class NotesController {
     public List<Notes> getNotes(@PathVariable("accountId") Long accountId){
         log.info("Invoked NotesController::getNotes");
         return notesService.getNotes(accountId);
+    }
+
+    @DeleteMapping("/delete")
+    public NotesResponse deleteNote(RequestEntity<NotesRequest> notesRequestRequestEntity){
+        log.info("Invoked NotesController::deleteNote");
+        validateRequestPayload(notesRequestRequestEntity);
+        return notesService.deleteNote(notesRequestRequestEntity.getBody());
+    }
+
+    private void validateRequestPayload(RequestEntity<?> requestEntity){
+        if (!requestEntity.hasBody()){
+            throw new BadRequestException("Request Body cannot be empty");
+        }
     }
 }
