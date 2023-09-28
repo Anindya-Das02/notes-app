@@ -25,7 +25,7 @@ public class Account {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(name = "email_id", nullable = false)
+    @Column(name = "email_id", nullable = false, unique = true)
     private String emailId;
 
     private String password;
@@ -36,8 +36,4 @@ public class Account {
     @OneToMany(mappedBy = "createdBy")
     private List<Notes> notes;
 
-    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
-    public String getPassword() {
-        return password;
-    }
 }

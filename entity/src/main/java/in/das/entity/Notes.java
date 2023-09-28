@@ -1,5 +1,6 @@
 package in.das.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,7 +35,9 @@ public class Notes {
     private boolean deleteFlag = false;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "account_id")
     private Account createdBy;
+
 
 }

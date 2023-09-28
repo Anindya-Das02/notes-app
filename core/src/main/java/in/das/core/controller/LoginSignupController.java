@@ -3,10 +3,13 @@ package in.das.core.controller;
 import in.das.core.services.AccountService;
 import in.das.entity.Account;
 import in.das.shared.exception.BadRequestException;
+import in.das.shared.models.AccountRequest;
+import in.das.shared.models.LoginResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,4 +30,12 @@ public class LoginSignupController {
         }
         return accountService.createAccount(accountRequestEntity.getBody());
     }
+
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public LoginResponse accountLogin(RequestEntity<AccountRequest> accountRequestRequestEntity){
+        log.info("LoginSignupController::accountLogin");
+        return accountService.accountLogin(accountRequestRequestEntity.getBody());
+    }
+
+
 }
