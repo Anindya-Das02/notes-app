@@ -42,7 +42,7 @@ public class SecurityConfig {
         http.cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> {
-                    request.requestMatchers("/notes-app/jwt/**","/notes-app/public/**")
+                    request.requestMatchers("/notes-app/jwt/**","/notes-app/public/**","/public/**")
                             .permitAll()
                             .anyRequest()
                             .authenticated();
