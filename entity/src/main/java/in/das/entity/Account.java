@@ -1,7 +1,5 @@
 package in.das.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,5 +33,4 @@ public class Account {
 
     @OneToMany(mappedBy = "createdBy")
     private List<Notes> notes;
-
 }

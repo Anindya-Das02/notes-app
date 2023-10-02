@@ -1,7 +1,9 @@
 package in.das.core.services;
 
 import in.das.entity.Account;
+import in.das.entity.Users;
 import in.das.repository.impl.AccountRepoImpl;
+import in.das.repository.impl.UsersRepoImpl;
 import in.das.shared.exception.AccountCreationException;
 import in.das.shared.exception.BadRequestException;
 import in.das.shared.exception.ValidationException;
@@ -28,11 +30,19 @@ public class AccountService {
     @Autowired
     private AccountRepoImpl accountRepositoryImpl;
 
+    @Autowired
+    private UsersRepoImpl usersRepoImpl;
+
     public Account createAccount(final Account account){
         log.info("creating account");
         account.setPassword(passwordEncoder.encode(account.getPassword()));
         account.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
         Account createdAccount = accountRepositoryImpl.createAccount(account);
+        Users user =  Users.builder()
+                .username(createdAccount.getUsername())
+                .password(createdAccount.getPassword())
+                .build();
+        Users userResult = usersRepoImpl.saveUsers(user);
         if(createdAccount == null){
             throw new AccountCreationException("An error occurred while creating account!");
         }

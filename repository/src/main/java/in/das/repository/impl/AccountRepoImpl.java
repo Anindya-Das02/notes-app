@@ -55,7 +55,7 @@ public class AccountRepoImpl {
         return accountRepository.findById(id).orElseThrow(() -> new AccountException("Cannot find Account with given id"));
     }
 
-    public Optional<Account> loginByUsernameAndPassword(final String username, final String password){
+    public Optional<Account> findAccountByUsernameAndPassword(final String username, final String password){
         return accountRepository.findByUsernameAndPassword(username,password);
     }
 

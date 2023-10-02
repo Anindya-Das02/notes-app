@@ -15,6 +15,6 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
 
     Optional<Account> findByEmailId(final String email);
 
-    @Query("select acc.id, acc.username, acc.emailId, acc.createdDate from Account acc where acc.username = :username and acc.password = :password")
+    @Query("select acc from Account acc where acc.username = :username and acc.password = :password")
     Optional<Account> findByUsernameAndPassword(final @Param("username") String username, final @Param("password") String password);
 }
